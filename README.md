@@ -21,10 +21,14 @@
 
 ## Local development
 
-* Requirements:
-    * JDK == 17
-    * docker/docker-compose are optional if a mongodb is available by some other means
-    * curl or some alternative means to execute http requests
+### Requirements
+
+* JDK == 17
+* docker/docker-compose are optional if a mongodb is available by some other means
+* curl or some alternative means to execute http requests
+* Suggested IDE: IntelliJ with ktlint plugin
+
+### Common commands
 
 * Start a local mongodb (if not available otherwise)
   ```bash
@@ -37,6 +41,11 @@
   ./gradlew build
   ```
 
+* Reformat code
+  ```bash
+  ./gradlew ktlintFormat
+  ```
+  
 * Start event-publisher in dev-mode (on port 8123)
   ```bash
   ./gradlew :event-publisher:run
@@ -69,6 +78,35 @@
   > curl http://localhost:8124/v1/projections/coins_and_stars/user/100
   {"coins":3,"stars":1}
   ```
+
+## Exercise
+
+Add an "assignment_results" aggregator for the teacher for an overview off all results of all assignments handed out to a group/class.
+
+* Example result might look like:
+  ```
+  > curl http://localhost:8124/v1/projections/assignment_results/group/1000
+  {
+    "assignments": [{
+      "assignmentId": 9000,
+      "results": [{
+        "userId": 100,
+        "numErrors": 0,
+        "maxErrors": 10
+      }, {
+        "userId": 102,
+        "numErrors": 3,
+        "maxErrors": 10
+      }, {
+        "userId": 103,
+        "numErrors": 5,
+        "maxErrors": 10
+      }]
+    }]
+  }
+  ```
+* Using maps instead of lists would work as well
+* Added bonus would be a list of all students that have not completed their assignment (yet?)
 
 ## Quiz
 
