@@ -1,0 +1,8 @@
+.gradle/
+.idea/
+.vscode/
+build/
+server/build/
+.envrc
+scripts/.venv/
+.mongo/

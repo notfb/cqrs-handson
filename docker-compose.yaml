@@ -1,0 +1,15 @@
+services:
+  mongo_db:
+    image: mongo
+    volumes:
+      - mongo-data:/data
+    ports:
+      - "27017:27017"
+    networks:
+      - cqrs
+networks:
+  cqrs:
+    driver: bridge
+volumes:
+  mongo-data:
+

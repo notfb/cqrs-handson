@@ -1,0 +1,202 @@
+[
+  {
+    "event_type": "AddStudentEvent",
+    "timestamp": "2023-09-01T08:00:00+02:00",
+    "userId": 100,
+    "groupId": 1000
+  },
+  {
+    "event_type": "AddStudentEvent",
+    "timestamp": "2023-09-01T08:00:01+02:00",
+    "userId": 101,
+    "groupId": 1000
+  },
+  {
+    "event_type": "AddStudentEvent",
+    "timestamp": "2023-09-01T08:00:02+02:00",
+    "userId": 102,
+    "groupId": 1000
+  },
+  {
+    "event_type": "AddStudentEvent",
+    "timestamp": "2023-09-01T08:00:03+02:00",
+    "userId": 103,
+    "groupId": 1000
+  },
+  {
+    "event_type": "AddStudentEvent",
+    "timestamp": "2023-09-01T08:00:04+02:00",
+    "userId": 104,
+    "groupId": 1000
+  },
+  {
+    "event_type": "AddStudentEvent",
+    "timestamp": "2023-09-01T08:00:05+02:00",
+    "userId": 200,
+    "groupId": 2000
+  },
+  {
+    "event_type": "AddStudentEvent",
+    "timestamp": "2023-09-01T08:00:06+02:00",
+    "userId": 201,
+    "groupId": 2000
+  },
+  {
+    "event_type": "AddStudentEvent",
+    "timestamp": "2023-09-01T08:00:07+02:00",
+    "userId": 202,
+    "groupId": 2000
+  },
+  {
+    "event_type": "RemoveStudentEvent",
+    "timestamp": "2023-09-01T08:01:00+02:00",
+    "userId": 104,
+    "groupId": 2000
+  },
+  {
+    "event_type": "AssignmentEvent",
+    "timestamp": "2023-09-01T09:00:00+02:00",
+    "userId": 100,
+    "groupId": 1000,
+    "assignmentId": 9000,
+    "exerciseId": "https://content.demo.nowhere/someexercise"
+  },
+  {
+    "event_type": "AssignmentEvent",
+    "timestamp": "2023-09-01T09:00:01+02:00",
+    "userId": 101,
+    "groupId": 1000,
+    "assignmentId": 9000,
+    "exerciseId": "https://content.demo.nowhere/someexercise"
+  },
+  {
+    "event_type": "AssignmentEvent",
+    "timestamp": "2023-09-01T09:00:02+02:00",
+    "userId": 102,
+    "groupId": 1000,
+    "assignmentId": 9000,
+    "exerciseId": "https://content.demo.nowhere/someexercise"
+  },
+  {
+    "event_type": "AssignmentEvent",
+    "timestamp": "2023-09-01T09:00:03+02:00",
+    "userId": 103,
+    "groupId": 1000,
+    "assignmentId": 9000,
+    "exerciseId": "https://content.demo.nowhere/someexercise"
+  },
+  {
+    "event_type": "AssignmentEvent",
+    "timestamp": "2023-09-01T10:00:00+02:00",
+    "userId": 200,
+    "groupId": 2000,
+    "assignmentId": 9001,
+    "exerciseId": "https://content.demo.nowhere/someotherexercise"
+  },
+  {
+    "event_type": "AssignmentEvent",
+    "timestamp": "2023-09-01T10:00:01+02:00",
+    "userId": 201,
+    "groupId": 2000,
+    "assignmentId": 9001,
+    "exerciseId": "https://content.demo.nowhere/someotherexercise"
+  },
+  {
+    "event_type": "AssignmentEvent",
+    "timestamp": "2023-09-01T10:00:02+02:00",
+    "userId": 202,
+    "groupId": 2000,
+    "assignmentId": 9001,
+    "exerciseId": "https://content.demo.nowhere/someotherexercise"
+  },
+  {
+    "event_type": "ExerciseFinishedEvent",
+    "timestamp": "2023-09-02T09:00:00+02:00",
+    "userId": 100,
+    "groupId": 1000,
+    "assignmentId": 9000,
+    "exerciseId": "https://content.demo.nowhere/someexercise",
+    "numErrors": 0,
+    "maxErrors": 10
+  },
+  {
+    "event_type": "ExerciseFinishedEvent",
+    "timestamp": "2023-09-02T09:00:02+02:00",
+    "userId": 102,
+    "groupId": 1000,
+    "assignmentId": 9000,
+    "exerciseId": "https://content.demo.nowhere/someexercise",
+    "numErrors": 3,
+    "maxErrors": 10
+  },
+  {
+    "event_type": "ExerciseFinishedEvent",
+    "timestamp": "2023-09-02T09:00:03+02:00",
+    "userId": 103,
+    "groupId": 1000,
+    "assignmentId": 9000,
+    "exerciseId": "https://content.demo.nowhere/someexercise",
+    "numErrors": 5,
+    "maxErrors": 10
+  },
+  {
+    "event_type": "ExerciseFinishedEvent",
+    "timestamp": "2023-09-02T10:00:00+02:00",
+    "userId": 200,
+    "groupId": 2000,
+    "assignmentId": 9001,
+    "exerciseId": "https://content.demo.nowhere/someotherexercise",
+    "numErrors": 1,
+    "maxErrors": 6
+  },
+  {
+    "event_type": "ExerciseFinishedEvent",
+    "timestamp": "2023-09-02T10:00:02+02:00",
+    "userId": 202,
+    "groupId": 2000,
+    "assignmentId": 9001,
+    "exerciseId": "https://content.demo.nowhere/someotherexercise",
+    "numErrors": 3,
+    "maxErrors": 6
+  },
+  {
+    "event_type": "AwardCoinsAndStarsEvent",
+    "timestamp": "2023-09-03T09:00:00+02:00",
+    "userId": 100,
+    "groupId": 1000,
+    "coins": 3,
+    "stars": 1
+  },
+  {
+    "event_type": "AwardCoinsAndStarsEvent",
+    "timestamp": "2023-09-03T09:00:02+02:00",
+    "userId": 102,
+    "groupId": 1000,
+    "coins": 2,
+    "stars": 0
+  },
+  {
+    "event_type": "AwardCoinsAndStarsEvent",
+    "timestamp": "2023-09-03T09:00:03+02:00",
+    "userId": 103,
+    "groupId": 1000,
+    "coins": 1,
+    "stars": 0
+  },
+  {
+    "event_type": "AwardCoinsAndStarsEvent",
+    "timestamp": "2023-09-03T10:00:00+02:00",
+    "userId": 200,
+    "groupId": 2000,
+    "coins": 3,
+    "stars": 0
+  },
+  {
+    "event_type": "AwardCoinsAndStarsEvent",
+    "timestamp": "2023-09-03T10:00:02+02:00",
+    "userId": 202,
+    "groupId": 2000,
+    "coins": 1,
+    "stars": 0
+  }
+]

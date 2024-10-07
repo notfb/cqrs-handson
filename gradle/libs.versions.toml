@@ -1,0 +1,57 @@
+[versions]
+kotlinxSerialization = "1.7.1"
+logback = "1.4.14"
+ktor = "2.3.12"
+koin = "4.0.0"
+micrometer = "1.12.5"
+pact = "4.6.11"
+logstashLogbackEncoder = "7.4"
+kotlinxCoroutines = "1.9.0"
+snapshotTesting = "4.0.8"
+mongodb = "5.1.3"
+junit-jupiter = "5.10.2"
+arrowkt = "1.2.4"
+
+[libraries]
+junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit-jupiter" }
+junit-jupiter-params = { module = "org.junit.jupiter:junit-jupiter-params", version.ref = "junit-jupiter" }
+
+logback = { group = "ch.qos.logback", name = "logback-classic", version.ref = "logback" }
+logback-logstash = { group = "net.logstash.logback", name = "logstash-logback-encoder", version.ref = "logstashLogbackEncoder" }
+
+mongo-coroutine-driver = { group = "org.mongodb", name = "mongodb-driver-kotlin-coroutine", version.ref = "mongodb" }
+mongo-bson-kotlinx = { group = "org.mongodb", name = "bson-kotlinx", version.ref = "mongodb" }
+
+ktor-server-core = { group = "io.ktor", name = "ktor-server-core", version.ref = "ktor" }
+ktor-server-netty = { group = "io.ktor", name = "ktor-server-netty", version.ref = "ktor" }
+ktor-server-contentNegotiation = { group = "io.ktor", name = "ktor-server-content-negotiation", version.ref = "ktor" }
+ktor-server-defaultHeaders = { group = "io.ktor", name = "ktor-server-default-headers", version.ref = "ktor" }
+ktor-server-callLogging = { group = "io.ktor", name = "ktor-server-call-logging", version.ref = "ktor" }
+ktor-server-statusPages = { group = "io.ktor", name = "ktor-server-status-pages", version.ref = "ktor" }
+ktor-server-test-host = { group = "io.ktor", name = "ktor-server-test-host", version.ref = "ktor" }
+ktor-server-cors = { group = "io.ktor", name = "ktor-server-cors", version.ref="ktor" }
+
+kotlinx-serialization-core = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-core", version.ref = "kotlinxSerialization" }
+kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerialization" }
+
+ktor-client-core = { group ="io.ktor", name = "ktor-client-core", version.ref = "ktor" }
+ktor-client-cio = { group ="io.ktor", name = "ktor-client-cio", version.ref = "ktor" }
+ktor-client-contentNegotiation = { group ="io.ktor", name = "ktor-client-content-negotiation", version.ref = "ktor" }
+ktor-serialization = { group ="io.ktor", name = "ktor-serialization", version.ref = "ktor" }
+ktor-serialization-json = { group ="io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
+koin-ktor = { group = "io.insert-koin", name = "koin-ktor", version.ref = "koin" }
+koin-logger = { group = "io.insert-koin", name = "koin-logger-slf4j", version.ref = "koin" }
+micrometer-prometheus = { group = "io.micrometer", name = "micrometer-registry-prometheus", version.ref = "micrometer" }
+
+pact-provider-junit5 = { group = "au.com.dius.pact.provider", name = "junit5", version.ref = "pact" }
+
+kotlinx-coroutines-core  = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
+kotlinx-coroutines-slf4j = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-slf4j", version.ref = "kotlinxCoroutines" }
+
+java-snapshot-testing = { group = "io.github.origin-energy", name = "java-snapshot-testing-junit5", version.ref = "snapshotTesting" }
+java-snapshot-testing-plugin-jackson = { group = "io.github.origin-energy", name = "java-snapshot-testing-plugin-jackson", version.ref = "snapshotTesting" }
+
+arrowkt-core  = { group = "io.arrow-kt", name = "arrow-core", version.ref = "arrowkt" }
+arrowkt-fx-coroutines = { group = "io.arrow-kt", name = "arrow-fx-coroutines", version.ref = "arrowkt" }
+arrowkt-optics = { group = "io.arrow-kt", name = "arrow-optics", version.ref = "arrowkt" }
+arrowkt-optics-ksp-plugin = { group = "io.arrow-kt", name = "arrow-optics-ksp-plugin", version.ref = "arrowkt" }
