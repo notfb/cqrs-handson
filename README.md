@@ -2,13 +2,14 @@
 
 ## Background
 
-* Users actions create different kind of events within the system that are collected by the "event-publisher" service
-  * Main objective of the "event-publisher" is to validate the event-data and store it (currently mongo database)
+* User actions create different kind of events within the system and collected by the "event-publisher" service
+  * Main objective of the "event-publisher" is to validate the event-data and store it (currently mongoDB database)
 * Events are aggregated into different views/snapshots within the "projection-aggregator" service to be displayed in the web-ui
+  * We refer to this as the 'fastlane,' which we use for views or snapshots driven by user feedback—where near real-time product updates are expected by the user
   * Aggregation can be triggered on-demand or via a background process/task (in this example only on-demand is implemented)
 * General business use-case:
   * Every user is identified by a "userId" and is part of a group/school-class identified by a "groupId"
-  * Users are distinguished as teachers and students (in this example the focus is on events associated with students)
+  * Users are categorized as either teachers or students (with the focus in this example on events related to students).
   * A teacher acts a maintainer for a group/class, i.e. a teacher can add or remove students from a group. This will
     create "AddStudentEvent" resp. "RemoveStudentEvent" per student.
   * A teacher can assign an exercise (identified by an "exerciseId", which refers to a static-content file) to students within
@@ -17,7 +18,7 @@
   * Students will work on assigned exercises which eventually creates an "ExerciseFinishedEvent" per student and assignment.
     The "ExerciseFinishedEvent" contains the number of errors made ("numErrors") and the maximum number of errors of
     the exercise, i.e. "numErrors == 0" is the perfect score and "numErrors == maxErrors" the worst possible score.
-  * Based on performance the teacher will award students with coins (i.e. good job) and stars (i.e. extent job), which
+  * Based on performance the teacher will award students with coins (i.e. good job) and stars (i.e. exemplary job), which
     creates an "AwardCoinsAndStarsEvent" per student.
 
 ## Local development
