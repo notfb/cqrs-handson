@@ -5,14 +5,15 @@
 * Users actions create different kind of events within the system that are collected by the "event-publisher" service
   * Main objective of the "event-publisher" is to validate the event-data and store it (currently mongo database)
 * Events are aggregated into different views/snapshots within the "projection-aggregator" service to be displayed in the web-ui
-  * Aggregation can be triggered on-demand or via a background process/task
+  * Aggregation can be triggered on-demand or via a background process/task (in this example only on-demand is implemented)
 * General business use-case:
   * Every user is identified by a "userId" and is part of a group/school-class identified by a "groupId"
-  * Users are distinguished as teachers and students
+  * Users are distinguished as teachers and students (in this example the focus is on events associated with students)
   * A teacher acts a maintainer for a group/class, i.e. a teacher can add or remove students from a group. This will
     create "AddStudentEvent" resp. "RemoveStudentEvent" per student.
   * A teacher can assign an exercise (identified by an "exerciseId", which refers to a static-content file) to students within
-   a group/class (e.g. homework). This will create an "AssignmentEvent" per student.
+    a group/class (e.g. homework). This will create an "AssignmentEvent" per student. To distinguish between assignments the
+    event contains an additional "assignmentId".
   * Students will work on assigned exercises which eventually creates an "ExerciseFinishedEvent" per student and assignment.
     The "ExerciseFinishedEvent" contains the number of errors made ("numErrors") and the maximum number of errors of
     the exercise, i.e. "numErrors == 0" is the perfect score and "numErrors == maxErrors" the worst possible score.
@@ -101,7 +102,7 @@
   {"members":[100,101,102,103]}
   ```
 
-## Exercise
+## Programming exercise
 
 Add an "assignment_results" aggregator for the teacher for an overview off all results of all assignments handed out to a group/class.
 
@@ -140,4 +141,4 @@ Add an "assignment_results" aggregator for the teacher for an overview off all r
 
 * How can the projection-aggregator be extended so that aggregates/snapshots are updated
   in the background rather than on demand?
-* How can coins and stars be awarded to the students automatically based on error percentage?
+* How can coins and stars be awarded to the students automatically based on error percentage in the assignment results?
