@@ -7,6 +7,7 @@ import common.model.event.eventBsonCodec
 import io.ktor.server.config.ApplicationConfig
 import org.bson.codecs.configuration.CodecRegistries
 import org.koin.core.qualifier.named
+import org.koin.dsl.bind
 import org.koin.dsl.module
 
 val daoModule =
@@ -29,6 +30,6 @@ val daoModule =
                 )
             mongoClient.getDatabase(mongoConfig.property("database").getString())
         }
-        single { EventDao() }
-        single { SnapshotDao() }
+        single { EventDao() } bind IEventDao::class
+        single { SnapshotDao() } bind ISnapshotDao::class
     }

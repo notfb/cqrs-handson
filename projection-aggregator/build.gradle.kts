@@ -27,7 +27,6 @@ dependencies {
     implementation(libs.koin.logger)
     implementation(libs.logback)
     implementation(libs.logback.logstash)
-    implementation(libs.micrometer.prometheus)
     implementation(libs.kotlinx.coroutines.slf4j)
     implementation(libs.mongo.coroutine.driver)
     implementation(libs.mongo.bson.kotlinx)
@@ -35,8 +34,9 @@ dependencies {
     implementation(libs.arrowkt.optics)
     ksp(libs.arrowkt.optics.ksp.plugin)
 
+    testImplementation(testFixtures(project(":common")))
+    testImplementation(libs.koin.test)
     testImplementation(libs.ktor.server.test.host)
-    testImplementation(libs.pact.provider.junit5)
     testImplementation(libs.java.snapshot.testing)
     testImplementation(libs.java.snapshot.testing.plugin.jackson)
     testImplementation(libs.junit.jupiter.engine)

@@ -18,10 +18,12 @@ import projection.model.Principal
 import projection.model.SnapshotEnvelope
 import java.time.OffsetDateTime
 
-class SnapshotDao : KoinComponent {
+class SnapshotDao :
+    KoinComponent,
+    ISnapshotDao {
     val database: MongoDatabase by inject()
 
-    suspend fun <S : Snapshot> findSnapshot(
+    override suspend fun <S : Snapshot> findSnapshot(
         aggregatorName: String,
         principal: Principal,
         version: Int,
@@ -40,7 +42,7 @@ class SnapshotDao : KoinComponent {
         }
     }
 
-    suspend fun <S : Snapshot> storeSnapshot(
+    override suspend fun <S : Snapshot> storeSnapshot(
         aggregatorName: String,
         principal: Principal,
         version: Int,

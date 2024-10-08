@@ -10,10 +10,12 @@ import org.koin.core.component.inject
 import projection.model.Principal
 import java.time.OffsetDateTime
 
-class EventDao : KoinComponent {
+class EventDao :
+    KoinComponent,
+    IEventDao {
     val database: MongoDatabase by inject()
 
-    suspend fun collectEvents(
+    override suspend fun collectEvents(
         startDateTime: OffsetDateTime,
         eventTypes: List<String>,
         principal: Principal,

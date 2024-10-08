@@ -28,6 +28,14 @@
 * curl or some alternative means to execute http requests
 * Suggested IDE: IntelliJ with ktlint plugin
 
+### Frameworks used
+
+* Build tool: [gradle](https://gradle.org/)
+* Formatting/linting: [ktlint](https://github.com/pinterest/ktlint)
+* Http/Rest framework: [ktor](https://ktor.io)
+* Dependency injection: [koin](https://insert-koin.io/)
+* Functional helpers: [Arrow](https://arrow-kt.io/)
+
 ### Common commands
 
 * Start a local mongodb (if not available otherwise)
@@ -56,11 +64,16 @@
   ./gradlew :projection-aggregator:run
   ```
 
+* Reset/empty the test-database:
+  ```bash
+  docker exec -ti cqrs-handson-mongo_db-1 mongosh --eval 'use backend; db.dropDatabase()'    
+  ```
+
 ## Fixture
 
 * Add the event fixtures to a running event-publisher
   ```bash
-  curl -X POST -d @fixtures/events.json -H "Content-Type: application/json"  http://localhost:8123/v1/publish
+  curl -X POST -d @common/src/testFixtures/resources/fixtures/events.json -H "Content-Type: application/json"  http://localhost:8123/v1/publish
   ```
 * Simulated behaviour:
   * Teacher adds students "100, 101, 102, 103, 104" to group/class "1000" and students "200, 201, 202" to group/class "2000"
@@ -77,6 +90,15 @@
   ```bash
   > curl http://localhost:8124/v1/projections/coins_and_stars/user/100
   {"coins":3,"stars":1}
+  ```
+* The teacher is able to query the current members of each group/class:
+  ```bash
+  curl http://localhost:8124/v1/projections/group_members/group/$GROUP_ID
+  ```
+  e.g.
+  ```bash
+  > curl http://localhost:8124/v1/projections/group_members/group/1000
+  {"members":[100,101,102,103]}
   ```
 
 ## Exercise

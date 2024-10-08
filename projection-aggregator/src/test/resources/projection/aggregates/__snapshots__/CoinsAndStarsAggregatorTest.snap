@@ -1,0 +1,32 @@
+projection.aggregates.CoinsAndStarsAggregatorTest.testFixture=[
+  {
+    "User(userId=100)": {
+      "coins": 3,
+      "stars": 1
+    },
+    "User(userId=101)": {
+      "coins": 0,
+      "stars": 0
+    },
+    "User(userId=102)": {
+      "coins": 2,
+      "stars": 0
+    },
+    "User(userId=104)": {
+      "coins": 0,
+      "stars": 0
+    },
+    "User(userId=200)": {
+      "coins": 3,
+      "stars": 0
+    },
+    "User(userId=201)": {
+      "coins": 0,
+      "stars": 0
+    },
+    "User(userId=202)": {
+      "coins": 1,
+      "stars": 0
+    }
+  }
+]

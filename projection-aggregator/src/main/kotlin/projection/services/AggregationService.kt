@@ -7,8 +7,8 @@ import org.slf4j.LoggerFactory
 import projection.aggregates.BaseAggregator
 import projection.aggregates.Snapshot
 import projection.aggregates.UnsupportedEventTypeException
-import projection.dao.EventDao
-import projection.dao.SnapshotDao
+import projection.dao.IEventDao
+import projection.dao.ISnapshotDao
 import projection.model.Principal
 import projection.model.SnapshotEnvelope
 import java.time.Instant
@@ -16,8 +16,8 @@ import java.time.OffsetDateTime
 import java.time.ZoneOffset
 
 class AggregationService : KoinComponent {
-    val eventDao: EventDao by inject()
-    val snapshotDao: SnapshotDao by inject()
+    val eventDao: IEventDao by inject()
+    val snapshotDao: ISnapshotDao by inject()
 
     suspend fun <S : Snapshot> updateSnapshot(
         aggregator: BaseAggregator<S>,

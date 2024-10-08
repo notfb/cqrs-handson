@@ -5,11 +5,13 @@ import common.model.event.Event
 import org.koin.core.component.KoinComponent
 import org.koin.core.component.inject
 
-class EventDao : KoinComponent {
+class EventDao :
+    KoinComponent,
+    IEventDao {
     val database: MongoDatabase by inject()
     val idGenerator: IdGenerator by inject()
 
-    suspend fun storeEvents(events: List<Event>): List<Event> {
+    override suspend fun storeEvents(events: List<Event>): List<Event> {
         val eventCollection = database.getCollection<Event>("events")
 
         val stored = mutableListOf<Event>()

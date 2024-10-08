@@ -1,11 +1,11 @@
 package projection.model
 
 sealed class Principal {
-    class User(
+    data class User(
         val userId: Long,
     ) : Principal()
 
-    class Group(
+    data class Group(
         val groupId: Long,
     ) : Principal()
 }

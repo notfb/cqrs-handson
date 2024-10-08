@@ -7,19 +7,22 @@ import kotlinx.serialization.Serializable
 import projection.model.Principal
 
 @Serializable
-data class GroupMembersSnapshot(val members: Set<Long> = emptySet()) : Snapshot
+data class GroupMembersSnapshot(
+    val members: Set<Long> = emptySet(),
+) : Snapshot
 
-class GroupMembersAggregator : BaseAggregator<GroupMembersSnapshot> (
-    name = "group_members",
-    version = 1,
-    principalTypes = listOf(Principal.Group::class),
-    eventTypes =
-        setOf(
-            AddStudentEvent::class,
-            RemoveStudentEvent::class,
-        ),
-    snapshotSerializer = GroupMembersSnapshot.serializer(),
-) {
+class GroupMembersAggregator :
+    BaseAggregator<GroupMembersSnapshot>(
+        name = "group_members",
+        version = 1,
+        principalTypes = listOf(Principal.Group::class),
+        eventTypes =
+            setOf(
+                AddStudentEvent::class,
+                RemoveStudentEvent::class,
+            ),
+        snapshotSerializer = GroupMembersSnapshot.serializer(),
+    ) {
     override fun initialSnapshot(principal: Principal): GroupMembersSnapshot = GroupMembersSnapshot()
 
     override suspend fun update(

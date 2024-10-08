@@ -8,10 +8,10 @@ import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.post
 import org.koin.ktor.ext.inject
-import publisher.dao.EventDao
+import publisher.dao.IEventDao
 
 fun Route.eventRoutes() {
-    val eventDao: EventDao by inject()
+    val eventDao: IEventDao by inject()
 
     post("/v1/publish") {
         val events = call.receive<List<Event>>()

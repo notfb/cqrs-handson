@@ -3,8 +3,6 @@ kotlinxSerialization = "1.7.1"
 logback = "1.4.14"
 ktor = "2.3.12"
 koin = "4.0.0"
-micrometer = "1.12.5"
-pact = "4.6.11"
 logstashLogbackEncoder = "7.4"
 kotlinxCoroutines = "1.9.0"
 snapshotTesting = "4.0.8"
@@ -41,9 +39,7 @@ ktor-serialization = { group ="io.ktor", name = "ktor-serialization", version.re
 ktor-serialization-json = { group ="io.ktor", name = "ktor-serialization-kotlinx-json", version.ref = "ktor" }
 koin-ktor = { group = "io.insert-koin", name = "koin-ktor", version.ref = "koin" }
 koin-logger = { group = "io.insert-koin", name = "koin-logger-slf4j", version.ref = "koin" }
-micrometer-prometheus = { group = "io.micrometer", name = "micrometer-registry-prometheus", version.ref = "micrometer" }
-
-pact-provider-junit5 = { group = "au.com.dius.pact.provider", name = "junit5", version.ref = "pact" }
+koin-test = { group = "io.insert-koin", name = "koin-test", version.ref = "koin" }
 
 kotlinx-coroutines-core  = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-core", version.ref = "kotlinxCoroutines" }
 kotlinx-coroutines-slf4j = { group = "org.jetbrains.kotlinx", name = "kotlinx-coroutines-slf4j", version.ref = "kotlinxCoroutines" }
