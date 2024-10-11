@@ -5,5 +5,6 @@ object AggregatorModule {
         listOf(
             CoinsAndStarsAggregator(),
             GroupMembersAggregator(),
+            AssigmentResultsAggregator(),
         ).associateBy { it.name }
 }
