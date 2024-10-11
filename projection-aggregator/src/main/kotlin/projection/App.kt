@@ -28,6 +28,7 @@ import projection.api.projectionRoutes
 import projection.api.statusRoutes
 import projection.dao.daoModule
 import projection.services.serviceModule
+import java.time.Instant
 
 fun Application.appModule() {
     install(Koin) {
@@ -35,6 +36,7 @@ fun Application.appModule() {
         modules(
             module {
                 single { BuildInfo.getBuildInfo() }
+                single(named("startTime"), createdAtStart = true) { Instant.now() }
                 single(named("mongo")) { environment.config.config("mongo") }
             },
             daoModule,
