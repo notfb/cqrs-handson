@@ -32,7 +32,7 @@ class InvalidStateException(msg: String) : RuntimeException(msg)
 class AssigmentResultsAggregator :
     BaseAggregator<AssigmentResultsSnapshot>(
         name = "assignment_results",
-        version = 1,
+        version = 2,
         principalTypes = listOf(Principal.Group::class),
         eventTypes =
         setOf(
@@ -56,7 +56,22 @@ class AssigmentResultsAggregator :
             // is AddStudentEvent -> snapshot.copy(members = snapshot.members + event.userId)
             // is RemoveStudentEvent -> snapshot.copy(members = snapshot.members - event.userId)
             is AssignmentEvent -> {
-                if (snapshot.assignments[event.assignmentId] == null) {
+                if (snapshot.assignments[event.assignmentId] != null) {
+                    snapshot.copy(
+                        assignments =
+                        snapshot.assignments +
+                                Pair(
+                                    event.assignmentId,
+                                    Assigment(
+                                        assignmentId = event.assignmentId,
+                                        results = snapshot.assignments[event.assignmentId]!!.results + Pair(
+                                            event.userId,
+                                            AssigmentResult(userId = event.userId)
+                                        )
+                                    )
+                                ),
+                    )
+                } else {
                     snapshot.copy(
                         assignments =
                         snapshot.assignments +
@@ -68,9 +83,8 @@ class AssigmentResultsAggregator :
                                     ),
                                 ),
                     )
-                } else {
-                    snapshot
                 }
+
             }
 
             is ExerciseFinishedEvent -> {
@@ -86,7 +100,8 @@ class AssigmentResultsAggregator :
                 snapshot.copy(
                     assignments =
                     snapshot.assignments +
-                            Pair(event.assignmentId,
+                            Pair(
+                                event.assignmentId,
                                 assigment.copy(results = assigment.results + makeResultPair(event)),
                             ),
                 )
@@ -96,7 +111,9 @@ class AssigmentResultsAggregator :
         }
 
     private fun makeResultPair(event: ExerciseFinishedEvent): Pair<Long, AssigmentResult> {
-        return Pair(event.userId, AssigmentResult(
+        return Pair(
+            event.userId,
+            AssigmentResult(
                 userId = event.userId,
                 numbErrors = event.numErrors,
                 maxErrors = event.maxErrors,
