@@ -24,6 +24,8 @@ data class AssigmentResultsSnapshot(
     val assignments: Map<Long, Assigment> = emptyMap(),
 ) : Snapshot
 
+class InvalidStateException(msg: String) : RuntimeException(msg)
+
 // TODO: unit test
 // TODO: should never fail and validation should be done by publisher
 class AssigmentResultsAggregator :
@@ -101,5 +103,3 @@ class AssigmentResultsAggregator :
             else -> throw UnsupportedEventTypeException(event::class)
         }
 }
-
-class InvalidStateException(msg: String) : RuntimeException(msg)
