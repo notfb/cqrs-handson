@@ -35,14 +35,14 @@ class AssigmentResultsAggregator :
         version = 2,
         principalTypes = listOf(Principal.Group::class),
         eventTypes =
-        setOf(
-            // TODO: needed? for validation?
-            // AddStudentEvent::class,
-            // TODO: Remove Result for userId?
-            // RemoveStudentEvent::class,
-            ExerciseFinishedEvent::class,
-            AssignmentEvent::class,
-        ),
+            setOf(
+                // TODO: needed? for validation?
+                // AddStudentEvent::class,
+                // TODO: Remove Result for userId?
+                // RemoveStudentEvent::class,
+                ExerciseFinishedEvent::class,
+                AssignmentEvent::class,
+            ),
         snapshotSerializer = AssigmentResultsSnapshot.serializer(),
     ) {
     override fun initialSnapshot(principal: Principal): AssigmentResultsSnapshot = AssigmentResultsSnapshot()
@@ -56,35 +56,23 @@ class AssigmentResultsAggregator :
             // is AddStudentEvent -> snapshot.copy(members = snapshot.members + event.userId)
             // is RemoveStudentEvent -> snapshot.copy(members = snapshot.members - event.userId)
             is AssignmentEvent -> {
-                if (snapshot.assignments[event.assignmentId] != null) {
-                    snapshot.copy(
-                        assignments =
+                val existingResults = snapshot.assignments[event.assignmentId]?.results ?: emptyMap()
+                snapshot.copy(
+                    assignments =
                         snapshot.assignments +
-                                Pair(
-                                    event.assignmentId,
-                                    Assigment(
-                                        assignmentId = event.assignmentId,
-                                        results = snapshot.assignments[event.assignmentId]!!.results + Pair(
-                                            event.userId,
-                                            AssigmentResult(userId = event.userId)
-                                        )
-                                    )
+                            Pair(
+                                event.assignmentId,
+                                Assigment(
+                                    assignmentId = event.assignmentId,
+                                    results =
+                                        existingResults +
+                                            Pair(
+                                                event.userId,
+                                                AssigmentResult(userId = event.userId),
+                                            ),
                                 ),
-                    )
-                } else {
-                    snapshot.copy(
-                        assignments =
-                        snapshot.assignments +
-                                Pair(
-                                    event.assignmentId,
-                                    Assigment(
-                                        assignmentId = event.assignmentId,
-                                        results = mapOf(event.userId to AssigmentResult(userId = event.userId))
-                                    ),
-                                ),
-                    )
-                }
-
+                            ),
+                )
             }
 
             is ExerciseFinishedEvent -> {
@@ -93,13 +81,13 @@ class AssigmentResultsAggregator :
                         .getOrElse(event.assignmentId) {
                             throw InvalidStateException(
                                 "Failed to find assigment with id ${event.assignmentId} in snapshot $snapshot. " +
-                                        "Missing AssignmentEvent for given assignmentId?",
+                                    "Missing AssignmentEvent for given assignmentId?",
                             )
                         }
 
                 snapshot.copy(
                     assignments =
-                    snapshot.assignments +
+                        snapshot.assignments +
                             Pair(
                                 event.assignmentId,
                                 assigment.copy(results = assigment.results + makeResultPair(event)),
