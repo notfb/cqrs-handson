@@ -19,7 +19,6 @@ data class Assigment(
     val results: Map<Long, AssigmentResult> = emptyMap(),
 )
 
-// TODO: groupId
 @Serializable
 data class AssigmentResultsSnapshot(
     val assignments: Map<Long, Assigment> = emptyMap(),
