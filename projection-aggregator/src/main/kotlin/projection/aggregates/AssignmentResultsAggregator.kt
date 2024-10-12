@@ -9,8 +9,9 @@ import projection.model.Principal
 @Serializable
 data class AssigmentResult(
     val userId: Long,
-    val numbErrors: Int,
-    val maxErrors: Int,
+    val numbErrors: Int = 0,
+    val maxErrors: Int = 0,
+    val completed: Boolean = false,
 )
 
 @Serializable
@@ -34,14 +35,14 @@ class AssigmentResultsAggregator :
         version = 1,
         principalTypes = listOf(Principal.Group::class),
         eventTypes =
-            setOf(
-                // TODO: needed? for validation?
-                // AddStudentEvent::class,
-                // TODO: Remove Result for userId?
-                // RemoveStudentEvent::class,
-                ExerciseFinishedEvent::class,
-                AssignmentEvent::class,
-            ),
+        setOf(
+            // TODO: needed? for validation?
+            // AddStudentEvent::class,
+            // TODO: Remove Result for userId?
+            // RemoveStudentEvent::class,
+            ExerciseFinishedEvent::class,
+            AssignmentEvent::class,
+        ),
         snapshotSerializer = AssigmentResultsSnapshot.serializer(),
     ) {
     override fun initialSnapshot(principal: Principal): AssigmentResultsSnapshot = AssigmentResultsSnapshot()
@@ -61,7 +62,10 @@ class AssigmentResultsAggregator :
                         snapshot.assignments +
                                 Pair(
                                     event.assignmentId,
-                                    Assigment(assignmentId = event.assignmentId),
+                                    Assigment(
+                                        assignmentId = event.assignmentId,
+                                        results = mapOf(event.userId to AssigmentResult(userId = event.userId))
+                                    ),
                                 ),
                     )
                 } else {
@@ -75,31 +79,29 @@ class AssigmentResultsAggregator :
                         .getOrElse(event.assignmentId) {
                             throw InvalidStateException(
                                 "Failed to find assigment with id ${event.assignmentId} in snapshot $snapshot. " +
-                                    "Missing AssignmentEvent for given assignmentId?",
+                                        "Missing AssignmentEvent for given assignmentId?",
                             )
                         }
 
                 snapshot.copy(
                     assignments =
-                        snapshot.assignments +
-                            Pair(
-                                event.assignmentId,
-                                assigment.copy(
-                                    results =
-                                        assigment.results +
-                                            Pair(
-                                                event.userId,
-                                                AssigmentResult(
-                                                    userId = event.userId,
-                                                    numbErrors = event.numErrors,
-                                                    maxErrors = event.maxErrors,
-                                                ),
-                                            ),
-                                ),
+                    snapshot.assignments +
+                            Pair(event.assignmentId,
+                                assigment.copy(results = assigment.results + makeResultPair(event)),
                             ),
                 )
             }
 
             else -> throw UnsupportedEventTypeException(event::class)
         }
+
+    private fun makeResultPair(event: ExerciseFinishedEvent): Pair<Long, AssigmentResult> {
+        return Pair(event.userId, AssigmentResult(
+                userId = event.userId,
+                numbErrors = event.numErrors,
+                maxErrors = event.maxErrors,
+                completed = true,
+            ),
+        )
+    }
 }
