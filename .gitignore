@@ -6,6 +6,5 @@ server/build/
 .envrc
 scripts/.venv/
 .mongo/
-/projection-aggregator/src/test/resources/projection/aggregates/__snapshots__/AssigmentResultsAggregatorTest.snap
 /.kotlin/errors/errors-*.log
 /projection-aggregator/src/test/resources/projection/aggregates/__snapshots__/AssigmentResultsAggregatorTest.snap.debug

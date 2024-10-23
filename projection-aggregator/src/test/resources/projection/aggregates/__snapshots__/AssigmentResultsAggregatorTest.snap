@@ -1,0 +1,64 @@
+projection.aggregates.AssigmentResultsAggregatorTest.testFixture=[
+  {
+    "Group(groupId=1000)": {
+      "assignments": {
+        "9000": {
+          "assignmentId": 9000,
+          "results": {
+            "100": {
+              "completed": true,
+              "maxErrors": 10,
+              "numErrors": 0,
+              "userId": 100
+            },
+            "101": {
+              "completed": false,
+              "maxErrors": 0,
+              "numErrors": 0,
+              "userId": 101
+            },
+            "102": {
+              "completed": true,
+              "maxErrors": 10,
+              "numErrors": 3,
+              "userId": 102
+            },
+            "103": {
+              "completed": true,
+              "maxErrors": 10,
+              "numErrors": 5,
+              "userId": 103
+            }
+          }
+        }
+      }
+    },
+    "Group(groupId=2000)": {
+      "assignments": {
+        "9001": {
+          "assignmentId": 9001,
+          "results": {
+            "200": {
+              "completed": true,
+              "maxErrors": 6,
+              "numErrors": 1,
+              "userId": 200
+            },
+            "201": {
+              "completed": false,
+              "maxErrors": 0,
+              "numErrors": 0,
+              "userId": 201
+            },
+            "202": {
+              "completed": true,
+              "maxErrors": 6,
+              "numErrors": 3,
+              "userId": 202
+            }
+          }
+        }
+      }
+    }
+  }
+]
