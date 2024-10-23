@@ -9,39 +9,42 @@ import java.time.OffsetDateTime
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
+private const val EXERCISE_ID = "exerciseId"
+
+private val assignmentEvent =
+    AssignmentEvent(
+        id = 1,
+        userId = 10,
+        groupId = 11,
+        timestamp = OffsetDateTime.now(),
+        assignmentId = 12,
+        exerciseId = EXERCISE_ID,
+    )
+
+private val removeStudentEvent =
+    RemoveStudentEvent(
+        id = 1,
+        userId = 10,
+        groupId = 11,
+        timestamp = OffsetDateTime.now(),
+    )
+
+private val exerciseFinishedEvent =
+    ExerciseFinishedEvent(
+        id = 1,
+        userId = 10,
+        groupId = 11,
+        timestamp = OffsetDateTime.now(),
+        assignmentId = 12,
+        exerciseId = EXERCISE_ID,
+        numErrors = 5,
+        maxErrors = 8,
+    )
+
+
 class AssigmentResultsAggregatorTest : BaseAggregatorTest() {
     override val aggregator = AssigmentResultsAggregator()
     override val principals = listOf(1000, 2000).map { groupId -> Principal.Group(groupId.toLong()) }
-
-    private val assignmentEvent =
-        AssignmentEvent(
-            id = 1,
-            userId = 10,
-            groupId = 11,
-            timestamp = OffsetDateTime.now(),
-            assignmentId = 12,
-            exerciseId = "exerciseId",
-        )
-
-    private val removeStudentEvent =
-        RemoveStudentEvent(
-            id = 1,
-            userId = 10,
-            groupId = 11,
-            timestamp = OffsetDateTime.now(),
-        )
-
-    private val exerciseFinishedEvent =
-        ExerciseFinishedEvent(
-            id = 1,
-            userId = 10,
-            groupId = 11,
-            timestamp = OffsetDateTime.now(),
-            assignmentId = 12,
-            exerciseId = "exerciseId",
-            numErrors = 5,
-            maxErrors = 8,
-        )
 
     @Test
     fun testInitialSnapshot() {
@@ -51,21 +54,14 @@ class AssigmentResultsAggregatorTest : BaseAggregatorTest() {
     @Test
     fun testAssigmentEventShouldAssignStudentToGroup() {
         val expected =
-            AssigmentResultsSnapshot(
+            makeSnapshot(
                 mapOf(
-                    assignmentEvent.assignmentId to
-                        Assigment(
-                            assignmentId = assignmentEvent.assignmentId,
-                            results =
-                                mapOf(
-                                    assignmentEvent.userId to
-                                        AssigmentResult(
-                                            userId = assignmentEvent.userId,
-                                            numbErrors = 0,
-                                            maxErrors = 0,
-                                            completed = false,
-                                        ),
-                                ),
+                    assignmentEvent.userId to
+                        AssigmentResult(
+                            userId = assignmentEvent.userId,
+                            numbErrors = 0,
+                            maxErrors = 0,
+                            completed = false,
                         ),
                 ),
             )
@@ -84,16 +80,7 @@ class AssigmentResultsAggregatorTest : BaseAggregatorTest() {
 
     @Test
     fun testRemoveStudentEventShouldRemoveStudentResults() {
-        val expected =
-            AssigmentResultsSnapshot(
-                mapOf(
-                    assignmentEvent.assignmentId to
-                        Assigment(
-                            assignmentId = assignmentEvent.assignmentId,
-                            results = mapOf(),
-                        ),
-                ),
-            )
+        val expected = makeSnapshot()
 
         runBlocking {
             val updatedSnapshot =
@@ -117,28 +104,21 @@ class AssigmentResultsAggregatorTest : BaseAggregatorTest() {
     fun testAssigmentEventShouldAssignMultipleStudentsToGroup() {
         val assignmentEvent2 = assignmentEvent.copy(id = 2, userId = 20)
         val expected =
-            AssigmentResultsSnapshot(
+            makeSnapshot(
                 mapOf(
-                    assignmentEvent.assignmentId to
-                        Assigment(
-                            assignmentId = assignmentEvent.assignmentId,
-                            results =
-                                mapOf(
-                                    assignmentEvent.userId to
-                                        AssigmentResult(
-                                            userId = assignmentEvent.userId,
-                                            numbErrors = 0,
-                                            maxErrors = 0,
-                                            completed = false,
-                                        ),
-                                    assignmentEvent2.userId to
-                                        AssigmentResult(
-                                            userId = assignmentEvent2.userId,
-                                            numbErrors = 0,
-                                            maxErrors = 0,
-                                            completed = false,
-                                        ),
-                                ),
+                    assignmentEvent.userId to
+                        AssigmentResult(
+                            userId = assignmentEvent.userId,
+                            numbErrors = 0,
+                            maxErrors = 0,
+                            completed = false,
+                        ),
+                    assignmentEvent2.userId to
+                        AssigmentResult(
+                            userId = assignmentEvent2.userId,
+                            numbErrors = 0,
+                            maxErrors = 0,
+                            completed = false,
                         ),
                 ),
             )
@@ -196,4 +176,15 @@ class AssigmentResultsAggregatorTest : BaseAggregatorTest() {
             )
         }
     }
+
+    private fun makeSnapshot(results: Map<Long, AssigmentResult> = emptyMap()) =
+        AssigmentResultsSnapshot(
+            mapOf(
+                assignmentEvent.assignmentId to
+                    Assigment(
+                        assignmentId = assignmentEvent.assignmentId,
+                        results = results,
+                    ),
+            ),
+        )
 }
