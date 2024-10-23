@@ -59,7 +59,7 @@ class AssigmentResultsAggregatorTest : BaseAggregatorTest() {
                     assignmentEvent.userId to
                         AssigmentResult(
                             userId = assignmentEvent.userId,
-                            numbErrors = 0,
+                            numErrors = 0,
                             maxErrors = 0,
                             completed = false,
                         ),
@@ -109,14 +109,14 @@ class AssigmentResultsAggregatorTest : BaseAggregatorTest() {
                     assignmentEvent.userId to
                         AssigmentResult(
                             userId = assignmentEvent.userId,
-                            numbErrors = 0,
+                            numErrors = 0,
                             maxErrors = 0,
                             completed = false,
                         ),
                     assignmentEvent2.userId to
                         AssigmentResult(
                             userId = assignmentEvent2.userId,
-                            numbErrors = 0,
+                            numErrors = 0,
                             maxErrors = 0,
                             completed = false,
                         ),
@@ -154,7 +154,7 @@ class AssigmentResultsAggregatorTest : BaseAggregatorTest() {
                                     assignmentEvent.userId to
                                         AssigmentResult(
                                             userId = assignmentEvent.userId,
-                                            numbErrors = exerciseFinishedEvent.numErrors,
+                                            numErrors = exerciseFinishedEvent.numErrors,
                                             maxErrors = exerciseFinishedEvent.maxErrors,
                                             completed = true,
                                         ),

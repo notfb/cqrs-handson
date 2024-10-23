@@ -9,14 +9,16 @@ import projection.model.Principal
 
 @Serializable
 data class AssigmentResult(
+    // Maybe remove userId because it#s already the key
     val userId: Long,
-    val numbErrors: Int = 0,
+    val numErrors: Int = 0,
     val maxErrors: Int = 0,
     val completed: Boolean = false,
 )
 
 @Serializable
 data class Assigment(
+    // Maybe remove assignmentId because it#s already the key
     val assignmentId: Long,
     val results: Map<Long, AssigmentResult> = emptyMap(),
 )
@@ -32,7 +34,7 @@ class InvalidStateException(msg: String) : RuntimeException(msg)
 class AssigmentResultsAggregator :
     BaseAggregator<AssigmentResultsSnapshot>(
         name = "assignment_results",
-        version = 3,
+        version = 4,
         principalTypes = listOf(Principal.Group::class),
         eventTypes =
             setOf(
@@ -125,7 +127,7 @@ class AssigmentResultsAggregator :
             event.userId,
             AssigmentResult(
                 userId = event.userId,
-                numbErrors = event.numErrors,
+                numErrors = event.numErrors,
                 maxErrors = event.maxErrors,
                 completed = true,
             ),
