@@ -9,7 +9,7 @@ import projection.model.Principal
 
 @Serializable
 data class AssigmentResult(
-    // Maybe remove userId because it#s already the key
+    // Maybe remove userId because it's already the key
     val userId: Long,
     val numErrors: Int = 0,
     val maxErrors: Int = 0,
@@ -18,7 +18,7 @@ data class AssigmentResult(
 
 @Serializable
 data class Assigment(
-    // Maybe remove assignmentId because it#s already the key
+    // Maybe remove assignmentId because it's already the key
     val assignmentId: Long,
     val results: Map<Long, AssigmentResult> = emptyMap(),
 )
@@ -60,18 +60,6 @@ class AssigmentResultsAggregator :
             is ExerciseFinishedEvent -> aggregateExerciseFinishedEvent(snapshot, event)
             else -> throw UnsupportedEventTypeException(event::class)
         }
-
-    private fun aggregateRemoveStudentEvent(
-        snapshot: AssigmentResultsSnapshot,
-        event: RemoveStudentEvent,
-    ): AssigmentResultsSnapshot {
-        return snapshot.copy(
-            assignments =
-                snapshot.assignments.entries.associate {
-                    it.key to it.value.copy(results = it.value.results - event.userId)
-                },
-        )
-    }
 
     private fun aggregateAssigmentEvent(
         snapshot: AssigmentResultsSnapshot,
@@ -131,6 +119,18 @@ class AssigmentResultsAggregator :
                 maxErrors = event.maxErrors,
                 completed = true,
             ),
+        )
+    }
+
+    private fun aggregateRemoveStudentEvent(
+        snapshot: AssigmentResultsSnapshot,
+        event: RemoveStudentEvent,
+    ): AssigmentResultsSnapshot {
+        return snapshot.copy(
+            assignments =
+            snapshot.assignments.entries.associate {
+                it.key to it.value.copy(results = it.value.results - event.userId)
+            },
         )
     }
 }
