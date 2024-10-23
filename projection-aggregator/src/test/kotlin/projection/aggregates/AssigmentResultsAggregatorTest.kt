@@ -74,6 +74,54 @@ class AssigmentResultsAggregatorTest : BaseAggregatorTest() {
     }
 
     @Test
+    fun testAssigmentEventShouldAssignMultipleStudentsToGroup() {
+        val assignmentEvent2 = assignmentEvent.copy(id = 2, userId = 20)
+        val expected =
+            AssigmentResultsSnapshot(
+                mapOf(
+                    assignmentEvent.assignmentId to
+                        Assigment(
+                            assignmentId = assignmentEvent.assignmentId,
+                            results =
+                                mapOf(
+                                    assignmentEvent.userId to
+                                        AssigmentResult(
+                                            userId = assignmentEvent.userId,
+                                            numbErrors = 0,
+                                            maxErrors = 0,
+                                            completed = false,
+                                        ),
+                                    assignmentEvent2.userId to
+                                        AssigmentResult(
+                                            userId = assignmentEvent2.userId,
+                                            numbErrors = 0,
+                                            maxErrors = 0,
+                                            completed = false,
+                                        ),
+                                ),
+                        ),
+                ),
+            )
+
+        runBlocking {
+            val updatedSnapshot =
+                aggregator.update(
+                    Principal.Group(assignmentEvent.groupId!!),
+                    assignmentEvent,
+                    AssigmentResultsSnapshot(),
+                )
+            assertEquals(
+                expected,
+                aggregator.update(
+                    Principal.Group(assignmentEvent.groupId!!),
+                    assignmentEvent2,
+                    updatedSnapshot,
+                ),
+            )
+        }
+    }
+
+    @Test
     fun testExerciseFinishedEventShouldMarkExerciseAsFinishedWithErrorCounts() {
         val expected =
             AssigmentResultsSnapshot(

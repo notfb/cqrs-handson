@@ -52,48 +52,59 @@ class AssigmentResultsAggregator :
         snapshot: AssigmentResultsSnapshot,
     ): AssigmentResultsSnapshot =
         when (event) {
-            is AssignmentEvent -> {
-                val existingResults = snapshot.assignments[event.assignmentId]?.results ?: emptyMap()
-                snapshot.copy(
-                    assignments =
-                        snapshot.assignments +
-                            Pair(
-                                event.assignmentId,
-                                Assigment(
-                                    assignmentId = event.assignmentId,
-                                    results =
-                                        existingResults +
-                                            Pair(
-                                                event.userId,
-                                                AssigmentResult(userId = event.userId),
-                                            ),
-                                ),
-                            ),
-                )
-            }
-
-            is ExerciseFinishedEvent -> {
-                val assigment =
-                    snapshot.assignments
-                        .getOrElse(event.assignmentId) {
-                            throw InvalidStateException(
-                                "Failed to find assigment with id ${event.assignmentId} in snapshot $snapshot. " +
-                                    "Missing AssignmentEvent for given assignmentId?",
-                            )
-                        }
-
-                snapshot.copy(
-                    assignments =
-                        snapshot.assignments +
-                            Pair(
-                                event.assignmentId,
-                                assigment.copy(results = assigment.results + makeResultPair(event)),
-                            ),
-                )
-            }
-
+            is AssignmentEvent -> aggregateAssigmentEvent(snapshot, event)
+            is ExerciseFinishedEvent -> aggregateExerciseFinishedEvent(snapshot, event)
             else -> throw UnsupportedEventTypeException(event::class)
         }
+
+    private fun aggregateAssigmentEvent(
+        snapshot: AssigmentResultsSnapshot,
+        event: AssignmentEvent,
+    ): AssigmentResultsSnapshot {
+        val existingResults = snapshot.assignments[event.assignmentId]?.results ?: emptyMap()
+        return snapshot.copy(
+            assignments = snapshot.assignments + makeAssigmentPair(event, existingResults),
+        )
+    }
+
+    private fun makeAssigmentPair(
+        event: AssignmentEvent,
+        existingResults: Map<Long, AssigmentResult>,
+    ) = Pair(
+        event.assignmentId,
+        Assigment(
+            assignmentId = event.assignmentId,
+            results =
+                existingResults +
+                    Pair(
+                        event.userId,
+                        AssigmentResult(userId = event.userId),
+                    ),
+        ),
+    )
+
+    private fun aggregateExerciseFinishedEvent(
+        snapshot: AssigmentResultsSnapshot,
+        event: ExerciseFinishedEvent,
+    ): AssigmentResultsSnapshot {
+        val assigment =
+            snapshot.assignments
+                .getOrElse(event.assignmentId) {
+                    throw InvalidStateException(
+                        "Failed to find assigment with id ${event.assignmentId} in snapshot $snapshot. " +
+                            "Missing AssignmentEvent for given assignmentId?",
+                    )
+                }
+
+        return snapshot.copy(
+            assignments =
+                snapshot.assignments +
+                    Pair(
+                        event.assignmentId,
+                        assigment.copy(results = assigment.results + makeResultPair(event)),
+                    ),
+        )
+    }
 
     private fun makeResultPair(event: ExerciseFinishedEvent): Pair<Long, AssigmentResult> {
         return Pair(
