@@ -27,7 +27,6 @@ data class AssigmentResultsSnapshot(
 
 class InvalidStateException(msg: String) : RuntimeException(msg)
 
-// TODO: unit test
 // TODO: should never fail and validation should be done by publisher
 class AssigmentResultsAggregator :
     BaseAggregator<AssigmentResultsSnapshot>(
@@ -53,8 +52,6 @@ class AssigmentResultsAggregator :
         snapshot: AssigmentResultsSnapshot,
     ): AssigmentResultsSnapshot =
         when (event) {
-            // is AddStudentEvent -> snapshot.copy(members = snapshot.members + event.userId)
-            // is RemoveStudentEvent -> snapshot.copy(members = snapshot.members - event.userId)
             is AssignmentEvent -> {
                 val existingResults = snapshot.assignments[event.assignmentId]?.results ?: emptyMap()
                 snapshot.copy(
