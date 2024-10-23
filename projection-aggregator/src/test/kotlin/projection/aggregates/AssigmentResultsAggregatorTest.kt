@@ -2,6 +2,7 @@ package projection.aggregates
 
 import common.model.event.AssignmentEvent
 import common.model.event.ExerciseFinishedEvent
+import common.model.event.RemoveStudentEvent
 import kotlinx.coroutines.runBlocking
 import projection.model.Principal
 import java.time.OffsetDateTime
@@ -20,6 +21,14 @@ class AssigmentResultsAggregatorTest : BaseAggregatorTest() {
             timestamp = OffsetDateTime.now(),
             assignmentId = 12,
             exerciseId = "exerciseId",
+        )
+
+    private val removeStudentEvent =
+        RemoveStudentEvent(
+            id = 1,
+            userId = 10,
+            groupId = 11,
+            timestamp = OffsetDateTime.now(),
         )
 
     private val exerciseFinishedEvent =
@@ -68,6 +77,37 @@ class AssigmentResultsAggregatorTest : BaseAggregatorTest() {
                     Principal.Group(assignmentEvent.groupId!!),
                     assignmentEvent,
                     AssigmentResultsSnapshot(),
+                ),
+            )
+        }
+    }
+
+    @Test
+    fun testRemoveStudentEventShouldRemoveStudentResults() {
+        val expected =
+            AssigmentResultsSnapshot(
+                mapOf(
+                    assignmentEvent.assignmentId to
+                        Assigment(
+                            assignmentId = assignmentEvent.assignmentId,
+                            results = mapOf(),
+                        ),
+                ),
+            )
+
+        runBlocking {
+            val updatedSnapshot =
+                aggregator.update(
+                    Principal.Group(assignmentEvent.groupId!!),
+                    assignmentEvent,
+                    AssigmentResultsSnapshot(),
+                )
+            assertEquals(
+                expected,
+                aggregator.update(
+                    Principal.Group(assignmentEvent.groupId!!),
+                    removeStudentEvent,
+                    updatedSnapshot,
                 ),
             )
         }

@@ -3,6 +3,7 @@ package projection.aggregates
 import common.model.event.AssignmentEvent
 import common.model.event.Event
 import common.model.event.ExerciseFinishedEvent
+import common.model.event.RemoveStudentEvent
 import kotlinx.serialization.Serializable
 import projection.model.Principal
 
@@ -31,14 +32,14 @@ class InvalidStateException(msg: String) : RuntimeException(msg)
 class AssigmentResultsAggregator :
     BaseAggregator<AssigmentResultsSnapshot>(
         name = "assignment_results",
-        version = 2,
+        version = 3,
         principalTypes = listOf(Principal.Group::class),
         eventTypes =
             setOf(
                 // TODO: needed? for validation?
                 // AddStudentEvent::class,
-                // TODO: Remove Result for userId?
-                // RemoveStudentEvent::class,
+                // TODO: should we keep the results if student was removed?
+                RemoveStudentEvent::class,
                 ExerciseFinishedEvent::class,
                 AssignmentEvent::class,
             ),
@@ -53,9 +54,22 @@ class AssigmentResultsAggregator :
     ): AssigmentResultsSnapshot =
         when (event) {
             is AssignmentEvent -> aggregateAssigmentEvent(snapshot, event)
+            is RemoveStudentEvent -> aggregateRemoveStudentEvent(snapshot, event)
             is ExerciseFinishedEvent -> aggregateExerciseFinishedEvent(snapshot, event)
             else -> throw UnsupportedEventTypeException(event::class)
         }
+
+    private fun aggregateRemoveStudentEvent(
+        snapshot: AssigmentResultsSnapshot,
+        event: RemoveStudentEvent,
+    ): AssigmentResultsSnapshot {
+        return snapshot.copy(
+            assignments =
+                snapshot.assignments.entries.associate {
+                    it.key to it.value.copy(results = it.value.results - event.userId)
+                },
+        )
+    }
 
     private fun aggregateAssigmentEvent(
         snapshot: AssigmentResultsSnapshot,
@@ -92,7 +106,7 @@ class AssigmentResultsAggregator :
                 .getOrElse(event.assignmentId) {
                     throw InvalidStateException(
                         "Failed to find assigment with id ${event.assignmentId} in snapshot $snapshot. " +
-                            "Missing AssignmentEvent for given assignmentId?",
+                            "Missing AssignmentEvent for given assignmentId? Student already removed?",
                     )
                 }
 
